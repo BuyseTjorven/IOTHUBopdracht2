@@ -17,6 +17,7 @@ namespace MCT.Functions
         public void Run([IoTHubTrigger("messages/events", Connection = "iothub")]EventData message, ILogger log)
         {
             log.LogInformation($"C# IoT Hub trigger function processed a message: {Encoding.UTF8.GetString(message.Body.Array)}");
+            var json = Encoding.UTF8.GetString(message.Body.Array);
         }
     }
 }

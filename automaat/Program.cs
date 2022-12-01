@@ -13,12 +13,22 @@ using automaat.Models;
 
 
 
+
 string connectionString = "HostName=tjorvenIOT.azure-devices.net;DeviceId=Machine;SharedAccessKey=r9ELFeA4Y/TwZR0GrVOGIuHSBy87lYns8p+2+VXkX3M=";
 var deviceClient = DeviceClient.CreateFromConnectionString(connectionString);
 
-
+#region Boot
+async Task GetDesiredPropertiesAsync()
+{
+    var twin = await deviceClient.GetTwinAsync();
+    var desiredProperties = twin.Properties.Desired;
+    var json = JsonConvert.SerializeObject(desiredProperties);
+    var config = JsonConvert.DeserializeObject<AutomaatConfig>(json);
+    Console.WriteLine("Desired properties: " + config.PriceWater);
+}
+#endregion
 #region Menu
-
+await GetDesiredPropertiesAsync();
 await Loop();
 async Task Loop()
 {
